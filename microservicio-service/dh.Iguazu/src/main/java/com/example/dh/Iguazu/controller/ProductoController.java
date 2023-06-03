@@ -5,6 +5,7 @@ import com.example.dh.Iguazu.model.Producto;
 import com.example.dh.Iguazu.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,13 +21,15 @@ public class ProductoController {
 
 
     @GetMapping("/vendedor")
+    @PreAuthorize("hasRole('ROLE_app_vendedor')")
         public ResponseEntity<List<Producto>> getProductosVendedor(){
         List<Producto> productos = productoRepository.findAll();
         return ResponseEntity.ok().body(productos);
     }
 
-    @GetMapping("/proveedor")
 
+    @GetMapping("/proveedor")
+    @PreAuthorize("hasRole('ROLE_app_proveedor')")
     public ResponseEntity<List<ProductoProveedorDto>> getProductosProveedor(){
         List<ProductoProveedorDto> productos = productoRepository.findAllExcludingWeight();
         return ResponseEntity.ok().body(productos);
