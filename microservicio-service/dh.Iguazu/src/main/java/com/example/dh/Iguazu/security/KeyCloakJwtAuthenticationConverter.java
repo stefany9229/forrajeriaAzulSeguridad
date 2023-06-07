@@ -89,6 +89,8 @@ public class KeyCloakJwtAuthenticationConverter implements Converter<Jwt, Abstra
   }
 
   public Collection<GrantedAuthority> getGrantedAuthorities(Jwt source) throws JsonProcessingException {
+    System.out.println(this.defaultGrantedAuthoritiesConverter.convert(source)
+    );
     return (Collection) Stream.concat(this.defaultGrantedAuthoritiesConverter.convert(source).stream(), extractResourceRoles(source).stream()).collect(Collectors.toSet());
   }
 }
