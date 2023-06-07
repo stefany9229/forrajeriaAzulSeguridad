@@ -6,6 +6,8 @@ spring:
     url: jdbc:mysql://localhost:3306/forrajeriaazul
     username: root
     password: admin1234
+  application:
+    name: forrajeria-service
 
   jpa:
     properties:
@@ -23,4 +25,14 @@ spring:
             client-id: keycloak-forrajeria-service
             #client-secret: CLocAsH2AjBSo0NOQd5FOER9tZg2Pnpe
             #redirect-uri: https://oauth.pstmn.io/v1/callback
-  
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}

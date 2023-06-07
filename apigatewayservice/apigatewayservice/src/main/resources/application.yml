@@ -13,18 +13,32 @@ spring:
             scope: openid
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:9090/login/oauth2/code/keycloak
+
   cloud:
     gateway:
       default-filters:
         - TokenRelay
       routes:
         - id: product-service
-          uri: http://localhost:8086
+          uri: lb://forrajeria-service
           predicates:
             - Path=/productos/**
+  application:
+    name: gateway
 
 server:
   port: 9090
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+
 
 
 
